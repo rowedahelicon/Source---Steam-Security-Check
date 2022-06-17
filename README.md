@@ -1,9 +1,11 @@
 # Steam Security Check [SourceMod]
 
-This is a SourceMod plugin that will kick players with an incomplete steam profile, this is almost always a hacker using a bot of some sort. An incomplete steam profile usually has no avatar and the profile displays the following text. AFAIK, it should work in TF2, OF, CS:GO, etc.
+This is a SourceMod plugin that will kick players with an incomplete steam profile, this is almost always a hacker using a bot of some sort. An incomplete steam profile usually has no avatar and the profile displays the following text.
 
 >This user has not yet set up their Steam Community profile.
 If you know this person, encourage them to set up their profile and join in the gaming!
+
+AFAIK, it should work in TF2, OF, CS:GO, etc.
 
 sec_steam_api "" - Set this to use your steam API key, which can aquired from here. https://steamcommunity.com/dev
 sec_steam_check "0" - Set this to 1 to enable the use of the plugin, 0 to disable.
