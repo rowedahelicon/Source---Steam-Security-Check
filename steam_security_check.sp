@@ -16,7 +16,7 @@ public Plugin myinfo =
 public void OnPluginStart()
 {
     g_cvSteamApiKey = CreateConVar("sec_steam_api", "", "API key for steam interface", FCVAR_PROTECTED);
-    g_cvSteamCheck = CreateConVar("sec_steam_check", "0", "Enables / Disables the use of the Steam Profile Check", FCVAR_PROTECTED);
+    g_cvSteamCheck = CreateConVar("sec_steam_check", "1", "Enables / Disables the use of the Steam Profile Check", FCVAR_PROTECTED);
 }
 
 public OnClientPostAdminCheck(int client)
@@ -49,7 +49,6 @@ void check_profile(int client)
     SteamWorks_SetHTTPCallbacks(hRequest, getCallback);
     SteamWorks_SetHTTPRequestContextValue(hRequest, pack);
     SteamWorks_SendHTTPRequest(hRequest);
-
 }
 
 public getCallback(Handle hRequestCB, bool bFailure, bool bRequestSuccessful, EHTTPStatusCode eStatusCode, any data)
