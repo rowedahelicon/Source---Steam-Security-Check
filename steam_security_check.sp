@@ -22,13 +22,13 @@ public void OnPluginStart()
 
 public OnClientPostAdminCheck(int client)
 {
-    if(g_cvSteamCheck.IntValue > 0)
+    if (g_cvSteamCheck.IntValue > 0)
     {
-        check_profile(client);
+        checkProfile(client);
     }
 }
 
-void check_profile(int client)
+void checkProfile(int client)
 {
     Handle hRequest = INVALID_HANDLE;
 
@@ -54,66 +54,66 @@ void check_profile(int client)
 
 public getCallback(Handle hRequestCB, bool bFailure, bool bRequestSuccessful, EHTTPStatusCode eStatusCode, any data)
 {
-    if(!bRequestSuccessful)
+    if (!bRequestSuccessful)
     {
         LogError("[Steam Profile Security] There was an error in the request.");
         CloseHandle(hRequestCB);
         return;
     }
 
-    if(eStatusCode == k_EHTTPStatusCode200OK) 
+    if (eStatusCode == k_EHTTPStatusCode200OK) 
     {
         //Nothing, but don't error out
     }
-    else if(eStatusCode == k_EHTTPStatusCode404NotFound) 
+    else if (eStatusCode == k_EHTTPStatusCode404NotFound) 
     {
         PrintToServer("[Steam Profile Security] 404 error found, is steam offline?");
         CloseHandle(hRequestCB);
         return;
     }
-    else if(eStatusCode == k_EHTTPStatusCode500InternalServerError)
+    else if (eStatusCode == k_EHTTPStatusCode500InternalServerError)
     {
-        PrintToServer("[Steam Profile Security] 505 error found, is steam offline?");
+        PrintToServer("[Steam Profile Security] 500 error found, is steam offline?");
         CloseHandle(hRequestCB);
         return;
     }
     else 
     {
-        char errmessage[128];
-        Format(errmessage, 128, "[Steam Profile Security] returned with an unexpected HTTP Code: %d. Check your API key.", eStatusCode);
-        LogError(errmessage);
+        char errMessage[128];
+        Format(errMessage, 128, "[Steam Profile Security] returned with an unexpected HTTP Code: %d. Check your API key.", eStatusCode);
+        LogError(errMessage);
         CloseHandle(hRequestCB);
         return;
     }
 
-    int bodysize;
-    bool bodyexists = SteamWorks_GetHTTPResponseBodySize(hRequestCB, bodysize);
+    int bodySize;
+    bool bodyExists = SteamWorks_GetHTTPResponseBodySize(hRequestCB, bodySize);
 
-    if(bodyexists == false)
+    if (bodyExists == false)
     {
         LogError("[Steam Profile Security] An unknown error occured with grabbing the body size.");
         CloseHandle(hRequestCB);
         return;
     }
 
-    char bodybuffer[10000];
-    bool gotdata = SteamWorks_GetHTTPResponseBodyData(hRequestCB, bodybuffer, bodysize);
+    char bodyBuffer[10000];
+    bool gotData = SteamWorks_GetHTTPResponseBodyData(hRequestCB, bodyBuffer, bodySize);
 
-    if(gotdata == false)
+    if (gotData == false)
     {
         LogError("[Steam Profile Security] No information found in response body.");
         CloseHandle(hRequestCB);
         return;
     }
 
-    JSON_Object obj = json_decode(bodybuffer);
+    JSON_Object obj = json_decode(bodyBuffer);
 
     JSON_Object arrResponse = obj.GetObject("response");
     JSON_Array arrPlayers = view_as<JSON_Array>(arrResponse.GetObject("players"));
     JSON_Object objPlayer = arrPlayers.GetObject(0);
-    bool profilestate = objPlayer.GetBool("profilestate");
+    bool profileState = objPlayer.GetBool("profilestate");
 
-    if(!profilestate)
+    if (!profileState)
     {
         char sId[64];
 
