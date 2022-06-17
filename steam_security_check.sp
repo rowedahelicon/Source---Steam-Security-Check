@@ -61,30 +61,33 @@ public getCallback(Handle hRequestCB, bool bFailure, bool bRequestSuccessful, EH
         return;
     }
 
-    if (eStatusCode == k_EHTTPStatusCode200OK) 
+    switch (eStatusCode)
     {
-        //Nothing, but don't error out
-    }
-    else if (eStatusCode == k_EHTTPStatusCode404NotFound) 
-    {
-        PrintToServer("[Steam Profile Security] 404 error found, is steam offline?");
-        CloseHandle(hRequestCB);
-        return;
-    }
-    else if (eStatusCode == k_EHTTPStatusCode500InternalServerError)
-    {
-        PrintToServer("[Steam Profile Security] 500 error found, is steam offline?");
-        CloseHandle(hRequestCB);
-        return;
-    }
-    else 
-    {
-        char errMessage[128];
-        Format(errMessage, 128, "[Steam Profile Security] returned with an unexpected HTTP Code: %d. Check your API key.", eStatusCode);
-        LogError(errMessage);
-        CloseHandle(hRequestCB);
-        return;
-    }
+        case k_EHTTPStatusCode200OK:
+        {
+           //Do nothing, but don't error out
+        }
+        case k_EHTTPStatusCode404NotFound:
+        {
+            PrintToServer("[Steam Profile Security] 404 error found, is steam offline?");
+            CloseHandle(hRequestCB);
+            return;
+        }
+        case k_EHTTPStatusCode500InternalServerError:
+        {
+            PrintToServer("[Steam Profile Security] 500 error found, is steam offline?");
+            CloseHandle(hRequestCB);
+            return;
+        }
+        default:
+        {
+            char errMessage[128];
+            Format(errMessage, 128, "[Steam Profile Security] returned with an unexpected HTTP Code: %d. Check your API key.", eStatusCode);
+            LogError(errMessage);
+            CloseHandle(hRequestCB);
+            return;
+        }
+    }  
 
     int bodySize;
     bool bodyExists = SteamWorks_GetHTTPResponseBodySize(hRequestCB, bodySize);
