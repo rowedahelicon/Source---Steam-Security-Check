@@ -21,7 +21,7 @@ public void OnPluginStart()
 
 public OnClientPostAdminCheck(int client)
 {
-	if(g_cvSteamCheck.IntValue > 0)
+    if(g_cvSteamCheck.IntValue > 0)
     {
         check_profile(client);
     }
