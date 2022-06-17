@@ -15,6 +15,7 @@ public Plugin myinfo =
 
 public void OnPluginStart()
 {
+    //Obtain a Steam API key from here: https://steamcommunity.com/dev 
     g_cvSteamApiKey = CreateConVar("sec_steam_api", "", "API key for steam interface", FCVAR_PROTECTED);
     g_cvSteamCheck = CreateConVar("sec_steam_check", "1", "Enables / Disables the use of the Steam Profile Check", FCVAR_PROTECTED);
 }
