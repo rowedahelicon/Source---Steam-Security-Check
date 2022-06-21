@@ -22,7 +22,7 @@ public void OnPluginStart()
 
 public OnClientPostAdminCheck(int client)
 {
-    if (g_cvSteamCheck.IntValue > 0)
+    if (g_cvSteamCheck.IntValue > 0 && IsValidClient(client))
     {
         checkProfile(client);
     }
@@ -131,3 +131,12 @@ public getCallback(Handle hRequestCB, bool bFailure, bool bRequestSuccessful, EH
     CloseHandle(hRequestCB);
     json_cleanup_and_delete(obj);
 }
+
+stock bool IsValidClient( int client )
+{
+    if ((client <= 0 || client > MaxClients) || !IsClientInGame(client) || IsFakeClient(client)) 
+    {
+        return false; 
+    }
+    return true; 
+}  
